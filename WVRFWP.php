@@ -20,6 +20,8 @@
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
+ * FIXED UPDATED A-FRAME aframe.min.js to 1.0.4 
+ * [vr-image url="http://yoursite.co/image-url.jpg" width="400" height="400" align="right" margin="20" border="solid" border_color="#FF0000"]
  */
 
 // If this file is called directly, abort.
@@ -41,9 +43,9 @@ class WVRFWP {
 	public function wvrfwp_style_params( $width, $height,  $margin, $align, $border, $border_width, $border_color ){
 		$style = '<style>
 					a-scene {
-						width: ' . $width . 'px;
-						height: ' . $height . 'px;
-						margin: ' . $margin . 'px;
+						width: ' . $width . ';
+						height: ' . $height . ';
+						margin: ' . $margin . ';
 						max-width: 100%;
 						max-height: 1080px;';
 
@@ -96,8 +98,10 @@ class WVRFWP {
 			if (!empty($url) && is_singular()){
 
 				$html = $this->wvrfwp_style_params($width, $height,  $margin, $align, $border, $border_width, $border_color);
-
-				$html .= '<a-scene embedded><a-sky src="' . $url . '" rotation="0 -130 0"></a-sky></a-scene>';
+				$html .= '<a-scene embedded>';
+				$html .= '<a-sky src="' . $url . '"></a-sky>';
+				$html .= '<a-entity id="cam" camera="zoom:1" look-controls></a-entity>';
+				$html .= '</a-scene>';
 
 			}
 
@@ -145,7 +149,8 @@ class WVRFWP {
 	 */
 	private function __construct() {
 			//add_action( 'wp_footer', array( $this, 'wvrfwp_aframe_js' ), 9999 );
-			wp_register_script( 'aframe', 'https://aframe.io/releases/0.3.0/aframe.min.js', array(), '0.3.0', true );
+			// Must be loaded in Header!
+			wp_register_script( 'aframe', '//aframe.io/releases/1.0.4/aframe.min.js', array(), '1.0.4', false );
 			wp_enqueue_script( 'aframe' );
 			add_shortcode( 'vr-image', array( $this, 'wvrfwp_image_embed_shortcode' ) );
 			add_shortcode( 'vr-video', array( $this, 'wvrfwp_video_embed_shortcode' ) );
